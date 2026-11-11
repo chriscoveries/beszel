@@ -138,122 +138,120 @@ export default function InfoBar({
 	}
 
 	return (
-		<>
-			<Card>
-				<div className="grid xl:flex xl:gap-4 px-4 sm:px-6 pt-3 sm:pt-4 pb-5">
-					<div className="min-w-0">
-						<h1 className="text-2xl sm:text-[1.6rem] font-semibold mb-1.5">{system.name}</h1>
-						<div className="flex xl:flex-wrap items-center py-4 xl:p-0 -mt-3 xl:mt-1 gap-3 text-sm text-nowrap opacity-90 max-xl:overflow-x-auto scrollbar-hide -mx-4 px-4 xl:mx-0">
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<div className="capitalize flex gap-2 items-center">
-										<span className={cn("relative flex h-3 w-3")}>
-											{system.status === SystemStatus.Up && (
-												<span
-													className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
-													style={{ animationDuration: "1.5s" }}
-												></span>
-											)}
+		<Card>
+			<div className="grid xl:flex xl:gap-4 px-4 sm:px-6 pt-3 sm:pt-4 pb-5">
+				<div className="min-w-0">
+					<h1 className="text-2xl sm:text-[1.6rem] font-semibold mb-1.5">{system.name}</h1>
+					<div className="flex xl:flex-wrap items-center py-4 xl:p-0 -mt-3 xl:mt-1 gap-3 text-sm text-nowrap opacity-90 max-xl:overflow-x-auto scrollbar-hide -mx-4 px-4 xl:mx-0">
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<div className="capitalize flex gap-2 items-center">
+									<span className={cn("relative flex h-3 w-3")}>
+										{system.status === SystemStatus.Up && (
 											<span
-												className={cn("relative inline-flex rounded-full h-3 w-3", {
-													"bg-green-500": system.status === SystemStatus.Up,
-													"bg-red-500": system.status === SystemStatus.Down,
-													"bg-primary/40": system.status === SystemStatus.Paused,
-													"bg-yellow-500": system.status === SystemStatus.Pending,
-												})}
+												className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
+												style={{ animationDuration: "1.5s" }}
 											></span>
-										</span>
-										{translatedStatus}
-									</div>
-								</TooltipTrigger>
-								{!!system.info.ct && (
-									<TooltipContent>
-										<div className="flex gap-1 items-center">
-											{system.info.ct === ConnectionType.WebSocket ? (
-												<WebSocketIcon className="size-4" />
-											) : (
-												<ChevronRightSquareIcon className="size-4" strokeWidth={2} />
-											)}
-											{connectionTypeLabels[system.info.ct as ConnectionType]}
-										</div>
-									</TooltipContent>
-								)}
-							</Tooltip>
-
-							{systemInfo.map(({ value, label, Icon, hide }) => {
-								if (hide || !value) {
-									return null
-								}
-								const content = (
-									<div className="flex gap-1.5 items-center">
-										<Icon className="h-4 w-4" /> {value}
-									</div>
-								)
-								return (
-									<div key={value} className="contents">
-										<Separator orientation="vertical" className="h-4 bg-primary/30" />
-										{label ? (
-											<Tooltip delayDuration={100}>
-												<TooltipTrigger asChild>{content}</TooltipTrigger>
-												<TooltipContent>{label}</TooltipContent>
-											</Tooltip>
-										) : (
-											content
 										)}
+										<span
+											className={cn("relative inline-flex rounded-full h-3 w-3", {
+												"bg-green-500": system.status === SystemStatus.Up,
+												"bg-red-500": system.status === SystemStatus.Down,
+												"bg-primary/40": system.status === SystemStatus.Paused,
+												"bg-yellow-500": system.status === SystemStatus.Pending,
+											})}
+										></span>
+									</span>
+									{translatedStatus}
+								</div>
+							</TooltipTrigger>
+							{!!system.info.ct && (
+								<TooltipContent>
+									<div className="flex gap-1 items-center">
+										{system.info.ct === ConnectionType.WebSocket ? (
+											<WebSocketIcon className="size-4" />
+										) : (
+											<ChevronRightSquareIcon className="size-4" strokeWidth={2} />
+										)}
+										{connectionTypeLabels[system.info.ct as ConnectionType]}
 									</div>
-								)
-							})}
-						</div>
-					</div>
-					<div className="xl:ms-auto flex items-center gap-2 max-sm:-mb-1">
-						<ChartTimeSelect className="w-full xl:w-40" agentVersion={chartData.agentVersion} />
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<Button aria-label={t`View`} variant="outline" size="icon" className="hidden xl:flex">
-									<Settings2Icon className="size-4 opacity-80" />
-								</Button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent className="min-w-38">
-								<DropdownMenuLabel className="px-3.5">
-									<Trans context="Layout display options">Display</Trans>
-								</DropdownMenuLabel>
-								<DropdownMenuSeparator />
-								<DropdownMenuRadioGroup
-									className="px-1 pb-1"
-									value={displayMode}
-									onValueChange={(v) => setDisplayMode(v as "default" | "tabs")}
-								>
-									<DropdownMenuRadioItem value="default" onSelect={(e) => e.preventDefault()}>
-										<Trans context="Default system layout option">Default</Trans>
-									</DropdownMenuRadioItem>
-									<DropdownMenuRadioItem value="tabs" onSelect={(e) => e.preventDefault()}>
-										<Trans context="Tabs system layout option">Tabs</Trans>
-									</DropdownMenuRadioItem>
-								</DropdownMenuRadioGroup>
-								<DropdownMenuSeparator />
-								<DropdownMenuLabel className="px-3.5">
-									<Trans>Chart width</Trans>
-								</DropdownMenuLabel>
-								<DropdownMenuSeparator />
-								<DropdownMenuRadioGroup
-									className="px-1 pb-1"
-									value={grid ? "grid" : "full"}
-									onValueChange={(v) => setGrid(v === "grid")}
-								>
-									<DropdownMenuRadioItem value="grid" onSelect={(e) => e.preventDefault()}>
-										<Trans>Grid</Trans>
-									</DropdownMenuRadioItem>
-									<DropdownMenuRadioItem value="full" onSelect={(e) => e.preventDefault()}>
-										<Trans>Full</Trans>
-									</DropdownMenuRadioItem>
-								</DropdownMenuRadioGroup>
-							</DropdownMenuContent>
-						</DropdownMenu>
-						<ActionsButton system={system} variant="outline" showAlerts />
+								</TooltipContent>
+							)}
+						</Tooltip>
+
+						{systemInfo.map(({ value, label, Icon, hide }) => {
+							if (hide || !value) {
+								return null
+							}
+							const content = (
+								<div className="flex gap-1.5 items-center">
+									<Icon className="h-4 w-4" /> {value}
+								</div>
+							)
+							return (
+								<div key={value} className="contents">
+									<Separator orientation="vertical" className="h-4 bg-primary/30" />
+									{label ? (
+										<Tooltip delayDuration={100}>
+											<TooltipTrigger asChild>{content}</TooltipTrigger>
+											<TooltipContent>{label}</TooltipContent>
+										</Tooltip>
+									) : (
+										content
+									)}
+								</div>
+							)
+						})}
 					</div>
 				</div>
-			</Card>
+				<div className="xl:ms-auto flex items-center gap-2 max-sm:-mb-1">
+					<ChartTimeSelect className="w-full xl:w-40" agentVersion={chartData.agentVersion} />
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button aria-label={t`View`} variant="outline" size="icon" className="hidden xl:flex">
+								<Settings2Icon className="size-4 opacity-80" />
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent className="min-w-38">
+							<DropdownMenuLabel className="px-3.5">
+								<Trans context="Layout display options">Display</Trans>
+							</DropdownMenuLabel>
+							<DropdownMenuSeparator />
+							<DropdownMenuRadioGroup
+								className="px-1 pb-1"
+								value={displayMode}
+								onValueChange={(v) => setDisplayMode(v as "default" | "tabs")}
+							>
+								<DropdownMenuRadioItem value="default" onSelect={(e) => e.preventDefault()}>
+									<Trans context="Default system layout option">Default</Trans>
+								</DropdownMenuRadioItem>
+								<DropdownMenuRadioItem value="tabs" onSelect={(e) => e.preventDefault()}>
+									<Trans context="Tabs system layout option">Tabs</Trans>
+								</DropdownMenuRadioItem>
+							</DropdownMenuRadioGroup>
+							<DropdownMenuSeparator />
+							<DropdownMenuLabel className="px-3.5">
+								<Trans>Chart width</Trans>
+							</DropdownMenuLabel>
+							<DropdownMenuSeparator />
+							<DropdownMenuRadioGroup
+								className="px-1 pb-1"
+								value={grid ? "grid" : "full"}
+								onValueChange={(v) => setGrid(v === "grid")}
+							>
+								<DropdownMenuRadioItem value="grid" onSelect={(e) => e.preventDefault()}>
+									<Trans>Grid</Trans>
+								</DropdownMenuRadioItem>
+								<DropdownMenuRadioItem value="full" onSelect={(e) => e.preventDefault()}>
+									<Trans>Full</Trans>
+								</DropdownMenuRadioItem>
+							</DropdownMenuRadioGroup>
+						</DropdownMenuContent>
+					</DropdownMenu>
+					<ActionsButton system={system} variant="outline" showAlerts />
+				</div>
+			</div>
 			<CifastCard data={system.info.ci} />
-		</>
+		</Card>
 	)
 }
