@@ -30,6 +30,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { ConnectionType, connectionTypeLabels, Os, SystemStatus } from "@/lib/enums"
 import { cn, formatBytes, getHostDisplayValue, secondsToUptimeString, toFixedFloat } from "@/lib/utils"
 import type { ChartData, SystemDetailsRecord, SystemRecord } from "@/types"
+import CifastCard from "./cifast-card"
 
 export default function InfoBar({
 	system,
@@ -250,6 +251,7 @@ export default function InfoBar({
 					<ActionsButton system={system} variant="outline" showAlerts />
 				</div>
 			</div>
+			<CifastCard data={system.info.ci} />
 		</Card>
 	)
 }

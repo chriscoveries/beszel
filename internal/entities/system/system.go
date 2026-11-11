@@ -166,6 +166,27 @@ const (
 	ConnectionTypeWebSocket
 )
 
+// CifastInfo is the current aggregate CI snapshot produced by CIFast. It is
+// intentionally part of Info rather than Stats: the source already aggregates
+// its own rolling window, so Beszel should show the latest snapshot rather than
+// average it into historical system records.
+type CifastInfo struct {
+	CapturedAt      int64    `json:"at" cbor:"0,keyasint"`
+	Status          string   `json:"s" cbor:"1,keyasint"`
+	OpenCoverage    string   `json:"oc" cbor:"2,keyasint"`
+	HistoryCoverage string   `json:"hc" cbor:"3,keyasint"`
+	WindowSeconds   uint32   `json:"w" cbor:"4,keyasint"`
+	Queued          *float64 `json:"q,omitempty" cbor:"5,keyasint,omitempty"`
+	Running         *float64 `json:"r,omitempty" cbor:"6,keyasint,omitempty"`
+	OldestQueue     *float64 `json:"oq,omitempty" cbor:"7,keyasint,omitempty"`
+	Finished        *float64 `json:"f,omitempty" cbor:"8,keyasint,omitempty"`
+	Vanished        *float64 `json:"x,omitempty" cbor:"9,keyasint,omitempty"`
+	QueueP50Seconds *float64 `json:"q50,omitempty" cbor:"10,keyasint,omitempty"`
+	QueueP90Seconds *float64 `json:"q90,omitempty" cbor:"11,keyasint,omitempty"`
+	RunP50Seconds   *float64 `json:"r50,omitempty" cbor:"12,keyasint,omitempty"`
+	RunP90Seconds   *float64 `json:"r90,omitempty" cbor:"13,keyasint,omitempty"`
+}
+
 // Core system data that is needed in All Systems table
 type Info struct {
 	Hostname      string `json:"h,omitempty" cbor:"0,keyasint,omitempty"` // deprecated - moved to Details struct
@@ -196,6 +217,7 @@ type Info struct {
 	PackageUpdates []uint16           `json:"pu,omitempty" cbor:"25,keyasint,omitempty"`  // [totalUpdates, securityUpdates] (security omitted if unknown)
 	WiFi           map[string]WiFi    `json:"wf,omitempty" cbor:"26,keyasint,omitempty"`  // connected Wi-Fi interfaces
 	SystemdLogs    bool               `json:"jl,omitzero" cbor:"27,keyasint,omitempty"`   // agent can read the system journal
+	Cifast         *CifastInfo        `json:"ci,omitempty" cbor:"28,keyasint,omitempty"`  // current aggregate CIFast snapshot
 }
 
 // Data that does not change during process lifetime and is not needed in All Systems table
