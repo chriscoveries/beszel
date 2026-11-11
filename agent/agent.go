@@ -258,6 +258,13 @@ func (a *Agent) gatherStats(options common.DataRequestOptions) *system.CombinedD
 		data.Info.PackageUpdates = a.packageUpdates.get(time.Now())
 	}
 
+	// CIFast publishes one atomic aggregate snapshot per collector tick. Read it
+	// only on Beszel's default 60-second collection path; shorter real-time polls
+	// reuse the latest current Info payload and never add file-system churn.
+	if cacheTimeMs == defaultDataCacheTimeMs {
+		data.Info.Cifast = getCifastInfo(time.Now())
+	}
+
 	data.Stats.ExtraFs = make(map[string]*system.FsStats)
 	data.Info.ExtraFsPct = make(map[string]float64)
 	for name, stats := range a.fsStats {
