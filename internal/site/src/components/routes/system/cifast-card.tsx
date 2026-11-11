@@ -1,5 +1,4 @@
 import { ActivityIcon } from "lucide-react"
-import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import type { CifastInfo } from "@/types"
 
@@ -48,7 +47,7 @@ export default function CifastCard({ data }: { data?: CifastInfo }) {
 	const window = formatWindow(data.w)
 
 	return (
-		<Card className="px-4 py-5 sm:px-6 sm:py-6">
+		<div className="border-t px-4 py-5 sm:px-6 sm:py-6">
 			<div className="flex flex-wrap items-start justify-between gap-3">
 				<div>
 					<div className="flex items-center gap-2">
@@ -75,6 +74,6 @@ export default function CifastCard({ data }: { data?: CifastInfo }) {
 					{formatCount(data.x)} job{data.x === 1 ? "" : "s"} vanished during the {window} window.
 				</p>
 			)}
-		</Card>
+		</div>
 	)
 }
