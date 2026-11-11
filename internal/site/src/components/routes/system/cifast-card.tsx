@@ -1,4 +1,4 @@
-import { ActivityIcon } from "lucide-react"
+import { Activity } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { CifastInfo } from "@/types"
 
@@ -51,7 +51,7 @@ export default function CifastCard({ data }: { data?: CifastInfo }) {
 			<div className="flex flex-wrap items-start justify-between gap-3">
 				<div>
 					<div className="flex items-center gap-2">
-						<ActivityIcon className="size-5" />
+						<Activity className="size-5" />
 						<h2 className="text-lg font-semibold">CIFast</h2>
 					</div>
 					<p className="mt-1 text-sm text-muted-foreground">
